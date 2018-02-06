@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    [SerializeField]
     float moveSpeed = 10f;
-    float jumpForce = 100f;
     float movement;
+    [SerializeField]
+    float jumpForce = 100f;
+    bool grounded = true;
+    bool doubleJump = true;
+
 
     Rigidbody2D rb;
 
@@ -18,11 +23,38 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         movement = Input.GetAxis("Horizontal");
-        
+
+        if (Input.GetButtonDown("Jump"))
+            Jump();
 	}
 
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(movement * moveSpeed, rb.velocity.y);
+    }
+
+    void Jump()
+    {
+        if (grounded)
+        {
+            rb.AddForce(new Vector2(0, jumpForce));
+            grounded = false;
+        }
+        else if (doubleJump)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);    // Nollställ Y-leddens velocity
+            rb.AddForce(new Vector2(0, jumpForce / 1.5f));         // Addera ny hoppkraft
+            doubleJump = false;
+        }
+    }
+
+    //
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            grounded = true;
+            doubleJump = true;
+        }
     }
 }
