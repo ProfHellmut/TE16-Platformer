@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    [SerializeField]
+    [SerializeField]            // Offentliggör variabeln i inspektorn utan att använda "public"
     float moveSpeed = 10f;
     float movement;
     [SerializeField]
@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour {
             Jump();
 	}
 
+    // Körs every other frame
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(movement * moveSpeed, rb.velocity.y);
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    //
+    // Körs när något kolliderar med vår trigger-collider
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Ground")
