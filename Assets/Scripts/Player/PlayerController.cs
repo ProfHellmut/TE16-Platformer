@@ -7,11 +7,14 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]            // Offentliggör variabeln i inspektorn utan att använda "public"
     float moveSpeed = 10f;
     float movement;
+
     [SerializeField]
     float jumpForce = 100f;
     bool grounded = true;
     bool doubleJump = true;
 
+    int health = 100;
+    Vector3 respawnPoint;
 
     Rigidbody2D rb;
 
@@ -26,12 +29,25 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetButtonDown("Jump"))
             Jump();
+
+        if (!IsAlive())
+        {
+            gameObject.SetActive(false);
+            transform.position = respawnPoint;
+            gameObject.SetActive(true);
+            health = 100;
+        }
 	}
 
     // Körs every other frame
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(movement * moveSpeed, rb.velocity.y);
+    }
+
+    bool IsAlive()
+    {
+        return health > 0;
     }
 
     void Jump()
@@ -52,10 +68,21 @@ public class PlayerController : MonoBehaviour {
     // Körs när något kolliderar med vår trigger-collider
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        switch (collision.gameObject.tag)
         {
-            grounded = true;
-            doubleJump = true;
+            case "Ground":
+                grounded = true;
+                doubleJump = true;
+                break;
+
+            case "DeathTrap":
+                health -= 100;
+                break;
+
+            case "Respawn":
+                respawnPoint = collision.gameObject.transform.position;
+                respawnPoint.y++;
+                break;
         }
     }
 }
