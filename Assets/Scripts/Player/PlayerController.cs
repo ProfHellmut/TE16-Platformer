@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -13,7 +14,10 @@ public class PlayerController : MonoBehaviour {
     bool grounded = true;
     bool doubleJump = true;
 
+    [SerializeField]
+    Slider healthSlider;
     int health = 100;
+    bool invincible = false;
     Vector3 respawnPoint;
 
     Rigidbody2D rb;
@@ -37,6 +41,8 @@ public class PlayerController : MonoBehaviour {
             gameObject.SetActive(true);
             health = 100;
         }
+
+        healthSlider.value = health;
 	}
 
     // Körs every other frame
@@ -84,5 +90,17 @@ public class PlayerController : MonoBehaviour {
                 respawnPoint.y++;
                 break;
         }
+
+        if (collision.gameObject.GetComponent<DamageController>() && !invincible)
+        {
+            health -= collision.gameObject.GetComponent<DamageController>().DealDamage();
+            invincible = true;
+            Invoke("BecomeMortal", 1.5f);
+        }
+    }
+
+    void BecomeMortal()
+    {
+        invincible = false;
     }
 }
