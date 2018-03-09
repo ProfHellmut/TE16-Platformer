@@ -21,12 +21,14 @@ public class PlayerController : MonoBehaviour {
     Vector3 respawnPoint;
 
     Rigidbody2D rb;
+    Animator anim;
 
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
         movement = Input.GetAxis("Horizontal");
@@ -43,7 +45,20 @@ public class PlayerController : MonoBehaviour {
         }
 
         healthSlider.value = health;
+
+        Animations();
 	}
+
+    void Animations()
+    {
+        anim.SetFloat("walk", Mathf.Abs(movement));
+        anim.SetBool("jump", !grounded);
+
+        if (movement > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else
+            transform.localScale = new Vector3(-1, 1, 1);
+    }
 
     // Körs every other frame
     private void FixedUpdate()

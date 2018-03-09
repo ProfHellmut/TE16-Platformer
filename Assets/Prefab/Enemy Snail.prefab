@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 58499497537532286}
   - component: {fileID: 114469157756303184}
   - component: {fileID: 114777819270464126}
+  - component: {fileID: 95999384390430958}
   m_Layer: 0
   m_Name: Enemy Snail
   m_TagString: Untagged
@@ -113,6 +114,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.91, y: 0.52}
   m_EdgeRadius: 0
+--- !u!95 &95999384390430958
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1342859883762948}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bf16c27c0c5031a4993c8d08319cb07c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114469157756303184
 MonoBehaviour:
   m_ObjectHideFlags: 1
