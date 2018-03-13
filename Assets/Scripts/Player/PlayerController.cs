@@ -11,50 +11,54 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     float jumpForce = 100f;
-    bool grounded = true;
+    bool grounded = true;       // Håller koll på om vi är på marken eller ej
     bool doubleJump = true;
 
     [SerializeField]
-    Slider healthSlider;
+    Slider healthSlider;        // vi använder en UI slider för att visa hälsa ovanför spelaren
     int health = 100;
     bool invincible = false;
-    Vector3 respawnPoint;
+    Vector3 respawnPoint;       // Håller koordinater för senast besökta respawn point
 
     Rigidbody2D rb;
     Animator anim;
 
 	// Use this for initialization
 	void Start () {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();   // Vi hämtar komponenterna från vårat gameobject
         anim = GetComponent<Animator>();
 	}
 
 	// Update is called once per frame
 	void Update () {
-        movement = Input.GetAxis("Horizontal");
+        movement = Input.GetAxis("Horizontal"); // Vi tilldelar movement ett floatvärde mellan -1 till +1 beroende på knapp
 
-        if (Input.GetButtonDown("Jump"))
-            Jump();
+        if (Input.GetButtonDown("Jump"))    // Vid knapptryck för "Jump" (spacebar) får vi ett boolvärde av true
+            Jump(); // Anropas vid true
 
-        if (!IsAlive())
+
+        if (!IsAlive())     // Om vi inte lever
         {
-            gameObject.SetActive(false);
-            transform.position = respawnPoint;
-            gameObject.SetActive(true);
-            health = 100;
+            gameObject.SetActive(false);        // Sätt spelaren till inaktiv
+            transform.position = respawnPoint;  // Sätt spelarens position till senaste respawnpoint
+            gameObject.SetActive(true);         // Sätt spelaren till aktiv
+            health = 100;                       // Tilldela full hälsa
         }
 
-        healthSlider.value = health;
+        healthSlider.value = health;            // Sätt vår UI sliders värde till värdet av vår hälsa
 
         Animations();
 	}
 
+    // Ansvarar för animationer och localScale
     void Animations()
     {
-        anim.SetFloat("walk", Mathf.Abs(movement));
-        anim.SetBool("jump", !grounded);
+        anim.SetFloat("walk", Mathf.Abs(movement));     // Tilldelar det absoluta värdet av movement till vår float-parameter(anim)
+        anim.SetBool("jump", !grounded);                // Tilldelar värdet av !grounded(motsatt värde av grounded)
 
-        if (movement > 0)
+        // Här ändrar vi X positionen i localScale beroende på vilket håll vi rör oss
+        // (Vi ändrar håll vi tittar åt)
+        if (movement >= 0)
             transform.localScale = new Vector3(1, 1, 1);
         else
             transform.localScale = new Vector3(-1, 1, 1);

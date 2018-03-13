@@ -31,12 +31,26 @@ public class EnemySnail : MonoBehaviour {
 
         if (hit.collider == false)
         {
-            if (movingLeft)
-                transform.localScale = new Vector3(-1, 1, 1);
-            else
-                transform.localScale = new Vector3(1, 1, 1);
-
-            movingLeft = !movingLeft;
+            ChangeDirection();
         }
 	}
+
+    void ChangeDirection()
+    {
+        
+        if (movingLeft)
+            transform.localScale = new Vector3(-2, 2, 2);
+        else
+            transform.localScale = new Vector3(2, 2, 2);
+
+        movingLeft = !movingLeft;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Projectile")
+        {
+            ChangeDirection();
+        }
+    }
 }
